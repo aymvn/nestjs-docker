@@ -2,11 +2,25 @@ services:
   nestjs_api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - '3000:3000'
     environment:
       - NODE_ENV=development
       - PORT=3000
+      - DB_HOST=mssql_db
+      - DB_PORT=1433
+      - DB_USER=sa
+      - DB_PASSWORD=732317
+      - DB_NAME=nestjs_docker_db
     volumes:
       - ./src:/usr/src/app/src
+  mssql_db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    ports:
+      - '1433:1433'
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_ENCRYPT=true
+      # - MSSQL_SA_PASSWORD=732317
+      # - MSSQL_PID=Developer
